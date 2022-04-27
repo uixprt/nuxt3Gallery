@@ -1,6 +1,6 @@
-# nuxt 3 Gallery 
+# Nuxt 3 Gallery 
 
-Masonry Gallery implementation with Vue Composition API and Nuxt3
+Masonry Gallery implementation with Vue Composition API and Nuxt 3
 
 Based on Nuxt 3 Minimal Starter
 

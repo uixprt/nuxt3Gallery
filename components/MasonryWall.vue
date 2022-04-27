@@ -1,4 +1,4 @@
-<!-- Source https://raw.githubusercontent.com/DerYeger/vue-masonry-wall/master/src/masonry-wall.vue -->
+<!-- Source https://github.com/DerYeger/vue-masonry-wall/blob/master/src/masonry-wall.vue -->
 
 <template>
   <div
