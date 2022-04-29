@@ -1,7 +1,7 @@
 <template>
-  <figure>
+  <figure  :style="{minHeight: `${height - 4}px`}">
     <NuxtLink :href="`/photo/${id}`">
-      <img :src="url" alt="{{title}}">
+      <img :src="thumbnailUrl" alt="{{title}}">
       <figcaption><span>{{ id }}) {{ title }}</span></figcaption>
     </NuxtLink>
   </figure>
@@ -9,10 +9,11 @@
 
 
 <script setup lang="ts">
-const props = defineProps({
-  url: String,
+defineProps({
+  thumbnailUrl: String,
   title: String,
   id: Number,
+  height: Number,
 })
 
 </script>

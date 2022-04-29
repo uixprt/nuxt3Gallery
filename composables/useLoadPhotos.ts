@@ -1,28 +1,57 @@
-import {Photo} from '@/types/photo';
+interface Photo {
+  url: string;
+  thumbnailUrl: string;
+  title: string;
+  id: number;
+  height?: number;
+}
 
+const placeholderPhotoHeights = [100, 210, 320];
 
-export async function useLoadPhotos(page: number) {
+function formatPhotos(photos: Photo[]): Photo[] {
+  return photos.map((photo) => {
+    const height =
+      placeholderPhotoHeights[
+        Math.floor(Math.random() * placeholderPhotoHeights.length)
+        ];
+    const file = `250x${height}.webp`;
+    const thumbnailUrl = photo.thumbnailUrl.replace("150", file);
+    return {...photo, thumbnailUrl, height};
+  });
+}
+
+export function useLoadPhotos() {
+  const page = ref(0);
+  const photos = ref(null);
+  let prevData = [];
+  const url = (page: number, limit = 25) =>
+    `https://jsonplaceholder.typicode.com/photos?_start=${
+      page * limit
+    }&_limit=${limit}`;
   
-  
-  const placeholderPhotoHeights = [100, 210, 320];
-  
-  function formatPhotos(photos: Photo[]): Photo[] {
-    return photos.map(photo => {
-      const height = placeholderPhotoHeights[Math.floor(Math.random() * placeholderPhotoHeights.length)];
-      const file = `250x${height}.webp`
-      const thumbnailUrl = photo.thumbnailUrl.replace('150', file);
-      return {...photo, thumbnailUrl, height};
-    })
+  function loadPhotos() {
+    //photos.value = null;
+    return fetch(url(page.value))
+      .then((data) => data.json())
+      .then((data) => formatPhotos(data))
   }
   
-  const url = (page: number, limit = 25) => `https://jsonplaceholder.typicode.com/photos?_start=${page * limit}&_limit=${limit}`;
+  loadPhotos().then((data) => {
+    photos.value = data;
+    prevData = data;
+  });
   
-  async function loadPhotos(page: number): Promise<Photo[]> {
-    const {data} = await useFetch<Photo[]>(url(page));
-    return formatPhotos(data.value);
+  
+  function next() {
+    if (page.value > 3) {
+      return;
+    }
+    page.value++;
+    loadPhotos().then((data) => {
+      photos.value = [...prevData, ...data];
+      prevData = [...prevData, ...data];
+    });
   }
-
-  const photos = ref(await loadPhotos(page));
   
-  return {photos, loadPhotos}
+  return {photos, next};
 }

@@ -2,7 +2,6 @@ import {defineNuxtConfig} from "nuxt";
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  buildAssetsDir: 'nuxt3',
   ssr: false, // Disable Server Side rendering
   head: {
     title: "Nuxt 3 Gallery",

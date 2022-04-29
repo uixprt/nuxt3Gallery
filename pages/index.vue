@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Header></Header>
-    <Gallery></Gallery>
+    <Header home="true"/>
+    <Gallery/>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 body {
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
