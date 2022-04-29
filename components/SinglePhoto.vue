@@ -1,7 +1,7 @@
 <template>
   <figure>
-    <img :src="url" alt="{{title}}">
-    <figcaption>{{ title }}</figcaption>
+    <img :src="url" alt="{{title}}" :style="{minHeight: '600px'}" class="mb-2">
+    <figcaption class="mb-2">{{ title }}</figcaption>
   </figure>
 </template>
 
@@ -19,7 +19,6 @@ figure {
 
   img {
     display: block;
-    margin-bottom: 2em;
     position: relative;
     overflow: hidden;
     border: 2px solid #ccc;
@@ -28,7 +27,7 @@ figure {
   }
 
   figcaption {
-    font-size: 2em;
+    font-size: 1.5em;
   }
 }
 </style>

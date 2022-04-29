@@ -1,10 +1,11 @@
 <template>
   <div class="container">
-    <Header :home="false"/>
-    <Image
+    <Header/>
+    <NuxtLink class="button" to="/">Home</NuxtLink>
+    <SinglePhoto
         :url="data.url"
         :title="data.title"
-    ></Image>
+    ></SinglePhoto>
   </div>
 </template>
 

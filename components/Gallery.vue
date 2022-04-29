@@ -1,16 +1,16 @@
 <template>
   <div ref="scrollComponent" v-if="photos">
-    <masonry-wall :items="photos" :column-width="250" :gap="10">
+    <GalleryMasonryWall :items="photos" :column-width="250" :gap="10">
       <template #default="{ item: photo }">
-        <thumbnail
+        <GalleryMasonryWallThumbnail
             class="item"
             :thumbnailUrl="photo.thumbnailUrl"
             :title="photo.title"
             :id="photo.id"
             :height="photo.height"
-        ></thumbnail>
+        ></GalleryMasonryWallThumbnail>
       </template>
-    </masonry-wall>
+    </GalleryMasonryWall>
   </div>
 </template>
 
