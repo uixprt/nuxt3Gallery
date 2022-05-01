@@ -3,6 +3,9 @@ import {defineNuxtConfig} from "nuxt";
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
   ssr: false, // Disable Server Side rendering
+  definePageMeta: {
+    keepalive: true,
+  },
   head: {
     title: "Nuxt 3 Gallery",
     description: "Masonry Gallery implementation with Vue Composition API and Nuxt 3",

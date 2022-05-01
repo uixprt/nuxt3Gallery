@@ -15,42 +15,52 @@
 </template>
 
 <script setup lang="ts">
-interface Photo {
-  url: string;
-  thumbnailUrl: string;
-  title: string;
-  id: number;
-  height?: number;
-}
+import {
+  formatPhotos,
+  FormattedPhoto
+} from "@/utils/format-photos";
 
-const placeholderPhotoHeights = [100, 210, 320];
+const base_url = 'https://jsonplaceholder.typicode.com/'
+const limit = 25;
 
-function formatPhotos(photos: Photo[]): Photo[] {
-  return photos.map((photo) => {
-    const height =
-        placeholderPhotoHeights[
-            Math.floor(Math.random() * placeholderPhotoHeights.length)
-            ];
-    const file = `250x${height}.webp`;
-    const thumbnailUrl = photo.thumbnailUrl.replace("150", file);
-    return {...photo, thumbnailUrl, height};
-  });
-}
-
-const url = (page: number, limit = 25) => `https://jsonplaceholder.typicode.com/photos?_start=${page * limit}&_limit=${limit}`;
-
-async function loadPhotos(page: number): Promise<Photo[]> {
-  const data = await fetch(url(page));
-  return formatPhotos(await data.json());
-}
-
-// prep for pagination
 const page = ref(0);
-const photos = ref(await loadPhotos(page.value));
 
-async function next() {
+const {
+  data,
+  refresh,
+} = await useFetch<FormattedPhoto[]>(() => `photos?_start=${page.value * limit}&_limit=${limit}`, {
+      baseURL: base_url,
+      transform: formatPhotos
+    }
+);
 
+const photos = ref<FormattedPhoto[]>(null);
+
+function next() {
+  if (page.value === 3) {
+    return;
+  }
+  page.value++;
+  refresh();
 }
+
+function reset() {
+  page.value = 0
+  refresh();
+}
+
+watch(
+    () => data.value,
+    (newValue, oldValue) => {
+      if (page.value === 0) {
+        photos.value = newValue;
+        return;
+      }
+      if (oldValue && newValue !== oldValue) {
+        photos.value = [...photos.value, ...newValue];
+      }
+    }
+)
 
 const scrollComponent = ref(null)
 
@@ -66,13 +76,7 @@ onUnmounted(() => {
 const handleScroll = async (e) => {
   let element = scrollComponent.value;
   if (element.getBoundingClientRect().bottom < window.innerHeight) {
-    if (page.value === 3) {
-      window.removeEventListener("scroll", handleScroll);
-      return;
-    }
-    page.value++;
-    const data = await loadPhotos(page.value)
-    photos.value = [...photos.value, ...data];
+    next();
   }
 }
 </script>

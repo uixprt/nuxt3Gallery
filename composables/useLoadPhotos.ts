@@ -1,57 +1,31 @@
-interface Photo {
-  url: string;
-  thumbnailUrl: string;
-  title: string;
-  id: number;
-  height?: number;
-}
-
-const placeholderPhotoHeights = [100, 210, 320];
-
-function formatPhotos(photos: Photo[]): Photo[] {
-  return photos.map((photo) => {
-    const height =
-      placeholderPhotoHeights[
-        Math.floor(Math.random() * placeholderPhotoHeights.length)
-        ];
-    const file = `250x${height}.webp`;
-    const thumbnailUrl = photo.thumbnailUrl.replace("150", file);
-    return {...photo, thumbnailUrl, height};
-  });
-}
+import {formatPhotos, FormattedPhoto} from "@/utils/format-photos";
 
 export function useLoadPhotos() {
+  const BASE_URL = 'https://jsonplaceholder.typicode.com/'
+  const LIMIT = 25;
+  
   const page = ref(0);
-  const photos = ref(null);
-  let prevData = [];
-  const url = (page: number, limit = 25) =>
-    `https://jsonplaceholder.typicode.com/photos?_start=${
-      page * limit
-    }&_limit=${limit}`;
+  const data = ref(null);
   
-  function loadPhotos() {
-    //photos.value = null;
-    return fetch(url(page.value))
-      .then((data) => data.json())
-      .then((data) => formatPhotos(data))
-  }
+  let refresh;
   
-  loadPhotos().then((data) => {
-    photos.value = data;
-    prevData = data;
-  });
-  
+  useFetch<FormattedPhoto[]>(() => `photos?_start=${page.value * LIMIT}&_limit=${LIMIT}`, {
+      baseURL: BASE_URL,
+      transform: formatPhotos
+    }
+  ).then(resp => {
+      data.value = resp.data;
+      refresh = resp.refresh;
+    }
+  );
   
   function next() {
-    if (page.value > 3) {
+    if (page.value === 3) {
       return;
     }
     page.value++;
-    loadPhotos().then((data) => {
-      photos.value = [...prevData, ...data];
-      prevData = [...prevData, ...data];
-    });
+    refresh();
   }
   
-  return {photos, next};
+  return {data, page, next};
 }

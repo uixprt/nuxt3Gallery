@@ -10,7 +10,7 @@ const PHOTO_HEIGHTS = [
   PhotoHeights.lg,
 ]
 
-interface apiPhoto {
+export interface ApiPhoto {
   url: string;
   thumbnailUrl: string;
   title: string;
@@ -18,7 +18,7 @@ interface apiPhoto {
   height?: number;
 }
 
-interface formattedPhoto {
+export interface FormattedPhoto {
   url: string;
   thumbnailUrl: string;
   title: string;
@@ -26,7 +26,7 @@ interface formattedPhoto {
   height: number;
 }
 
-export function formatPhotos(photos: apiPhoto[]): formattedPhoto[] {
+export function formatPhotos(photos: ApiPhoto[]): FormattedPhoto[] {
   return photos.map((photo) => {
     const height =
       PHOTO_HEIGHTS[

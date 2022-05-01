@@ -1,10 +1,11 @@
 <template>
-  <figure  :style="{minHeight: `${height - 4}px`}">
-    <NuxtLink :href="`/photo/${id}`">
+  <NuxtLink :to="`/photo/${id}`">
+    <figure :style="{minHeight: `${height - 4}px`}">
       <img :src="thumbnailUrl" alt="{{title}}">
       <figcaption><span>{{ id }}) {{ title }}</span></figcaption>
-    </NuxtLink>
-  </figure>
+    </figure>
+  </NuxtLink>
+
 </template>
 
 
@@ -19,6 +20,10 @@ defineProps({
 </script>
 
 <style scoped lang="scss">
+a {
+  display: block;
+}
+
 figure {
   display: block;
   margin: 0;

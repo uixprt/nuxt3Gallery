@@ -1,16 +1,9 @@
 <template>
   <div class="container">
-    <Header home="true"/>
+    <Header />
     <Gallery/>
   </div>
 </template>
-
-
-<script>
-export default {
-  components: {}
-}
-</script>
 
 <style lang="scss">
 body {
@@ -19,6 +12,14 @@ body {
   font-size: 14px;
   color: #222;
   background-color: #adadad;
+  box-sizing: border-box;
+}
+
+* {
+  &:before,
+  &:after {
+    box-sizing: inherit;
+  }
 }
 
 .container {
@@ -33,6 +34,7 @@ body {
   color: #fff;
   border-radius: 0.5em;
   text-decoration: none;
+  display: inline-block;
 
   &,
   &:visited {
@@ -47,9 +49,5 @@ body {
 
 .mb-1 {
   margin-bottom: 1em;
-}
-
-.mb-2 {
-  margin-bottom: 2em;
 }
 </style>

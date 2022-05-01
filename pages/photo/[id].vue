@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <Header/>
-    <NuxtLink class="button" to="/">Home</NuxtLink>
-    <SinglePhoto
-        :url="data.url"
-        :title="data.title"
+    <Header />
+    <NuxtLink class="button mb-1" to="/">Home</NuxtLink>
+    <SinglePhoto v-if="data"
+                 :url="data.url"
+                 :title="data.title"
     ></SinglePhoto>
   </div>
 </template>
@@ -13,5 +13,5 @@
 const rout = useRoute();
 const id = +rout.params.id;
 
-const {data} = await useFetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
+const {data} = await useFetch(`https://jsonplaceholder.typicode.com/photos/${id}`);
 </script>
